@@ -1,5 +1,7 @@
 package cdc.search;
 
+import cdc.maze.Node;
+
 /**
  * Interface for A* search heuristics.
  * @author Christopher D. Canfield

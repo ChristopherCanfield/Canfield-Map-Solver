@@ -1,5 +1,7 @@
 package cdc.search;
 
+import cdc.maze.Node;
+
 /**
  * Heuristic used to calculate the Manhattan distance between two squares.
  * The Manhattan distance provides the grid-based distance between the squares.

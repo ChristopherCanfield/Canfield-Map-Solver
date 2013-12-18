@@ -1,13 +1,17 @@
-package cdc.search;
+package cdc.maze;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+
+import cdc.app.Drawable;
 
 /**
  * A square in the maze.
  * @author Christopher D. Canfield
  */
-public class Node
+public class Node implements Drawable
 {
 	// The node's (row, column) location in the maze.
 	private MazeLocation location;
@@ -95,5 +99,17 @@ public class Node
 	{
 		edges.add(edge);
 		return this;
+	}
+
+	@Override
+	public void draw(Graphics g, int startX, int startY, int pixelsPerNode)
+	{
+		// Calculate the x and y pixels.
+		int pixelX = getColumn() * pixelsPerNode;
+		int pixelY = getRow() * pixelsPerNode;
+
+		g.setColor(Color.BLACK);
+		// Draw a black outline around the node's square.
+		g.drawRect(pixelX, pixelY, pixelsPerNode, pixelsPerNode);
 	}
 }

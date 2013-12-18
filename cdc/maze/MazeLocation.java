@@ -1,4 +1,4 @@
-package cdc.search;
+package cdc.maze;
 
 /**
  * The row, column location of a Node in the Maze.
