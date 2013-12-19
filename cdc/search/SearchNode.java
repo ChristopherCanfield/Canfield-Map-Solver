@@ -69,8 +69,8 @@ public class SearchNode extends Node implements Comparable<SearchNode>
 	public void draw(Graphics graphics, int startX, int startY, int pixelsPerNode)
 	{
 		// Calculate the x and y pixels.
-		int pixelX = getColumn() * pixelsPerNode;
-		int pixelY = getRow() * pixelsPerNode;
+		int pixelX = getColumn() * pixelsPerNode + startX;
+		int pixelY = getRow() * pixelsPerNode + startY;
 		
 		graphics.setColor(Color.BLUE);
 		// Draw the node as a blue rectangle.

@@ -26,7 +26,7 @@ public class MazeApp extends JFrame
 	{
 		// Change this to new TestMazeApp_allOpen() or TestMazeApp_allClosed()
 		// to run the two test apps.
-		MazeApp mazeApp = new MazeApp();
+		MazeApp mazeApp = new TestMazeApp_allOpen();
 		mazeApp.run();
 	}
 	
@@ -42,6 +42,11 @@ public class MazeApp extends JFrame
 	
 	/** The maze, as an array of nodes. **/
 	private Node[][] maze = null;
+	
+	/** The start Node; used for drawing the node. **/
+	private Node start = null;
+	/** The exit Node; used for drawing the node. **/
+	private Node exit = null;
 	
 	/** 
 	 * The result returned by the A* search, which includes the path
@@ -85,11 +90,11 @@ public class MazeApp extends JFrame
 		maze = MazeCreator.generateMaze(seed);
 		
 		// Get the maze's start and end nodes.
-		Node start = MazeCreator.getEntrance(maze);
-		Node end = MazeCreator.getExit(maze);
+		start = MazeCreator.getEntrance(maze);
+		exit = MazeCreator.getExit(maze);
 		
 		// Perform an A* search, and get the path from the start to the goal.
-		searchResult = Search.aStar(start, end, new ManhattanHeuristic());
+		searchResult = Search.aStar(start, exit, new ManhattanHeuristic());
 		
 		// Print the path to the console.
 		System.out.println("Path: " + searchResult.toString());
@@ -127,6 +132,24 @@ public class MazeApp extends JFrame
 	}
 	
 	/**
+	 * Sets the start node. Used by test applications.
+	 * @param start The maze's start node.
+	 */
+	protected void setStart(Node start)
+	{
+		this.start = start;
+	}
+	
+	/**
+	 * Sets the exit node. Used by test applications.
+	 * @param exit The maze's exit node.
+	 */
+	protected void setExit(Node exit)
+	{
+		this.exit = exit;
+	}
+	
+	/**
 	 * Prompts the user for a seed for the maze generator.
 	 * @return The instantiated maze.
 	 * @throws NumberFormatException If an invalid value is entered by the user,
@@ -149,38 +172,67 @@ public class MazeApp extends JFrame
 		
 		if (maze != null)
 		{
-			// Ensure that a searchResult has been returned by the A* algorithm.
-			if (searchResult != null)
+			drawSearchResult(g);
+			drawStartAndExit(g);
+			drawMaze(g);
+		}
+		
+		// Write text at the bottom of the JFrame.
+		g.setColor(Color.BLACK);
+		g.drawString("BU MET CS664 | Christopher Canfield", 
+				150, FIRST_NODE_Y + 30 + PIXELS_PER_NODE * 10);
+	}
+	
+	/**
+	 * Draw the searched set followed by the path.
+	 * @param g The graphics context.
+	 */
+	private void drawSearchResult(Graphics g)
+	{
+		// Ensure that a searchResult has been returned by the A* algorithm.
+		if (searchResult != null)
+		{
+			// Draw the set of searched nodes.
+			for (Node node : searchResult.getSearchedNodes())
 			{
-				// Draw the set of searched nodes.
-				for (Node node : searchResult.getSearchedNodes())
-				{
-					node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
-				}
-				
-				// Ensure that a valid path was found by the A* algorithm.
-				if (searchResult.getPath() != null)
-				{
-					// Draw the path.
-					for (Node node : searchResult.getPath())
-					{
-						node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
-					}
-				}
+				node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
 			}
 			
-			// Draw each node in the maze.
-			for (Node[] m : maze)
+			// Ensure that a valid path was found by the A* algorithm.
+			if (searchResult.getPath() != null)
 			{
-				for (Node node : m)
+				// Draw the path.
+				for (Node node : searchResult.getPath())
 				{
 					node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
 				}
 			}
 		}
-		
-		g.setColor(Color.BLACK);
-		g.drawString("BU MET CS664 | Christopher Canfield", 
-				150, FIRST_NODE_Y + 30 + PIXELS_PER_NODE * 10);
+	}
+	
+	/**
+	 * Draw the start and exit node.
+	 * @param g The graphics context.
+	 */
+	private void drawStartAndExit(Graphics g)
+	{
+		if (start != null) start.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
+		if (exit != null) exit.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
+	}
+	
+	/**
+	 * Draw all nodes in the maze.
+	 * @param g The graphics context.
+	 */
+	private void drawMaze(Graphics g)
+	{
+		// Draw each node in the maze.
+		for (Node[] m : maze)
+		{
+			for (Node node : m)
+			{
+				node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
+			}
+		}
 	}
 }

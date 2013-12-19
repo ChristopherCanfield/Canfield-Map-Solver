@@ -25,7 +25,9 @@ public class TestMazeApp_allOpen extends MazeApp
 		
 		// Get the maze's start and end nodes.
 		Node startNode = MazeCreator.getEntrance(maze);
+		setStart(startNode);
 		Node exitNode = MazeCreator.getExit(maze);
+		setExit(exitNode);
 		
 		// Perform an A* search, and get the path from the start to the goal.
 		setSearchResult(Search.aStar(startNode, exitNode, new ManhattanHeuristic()));

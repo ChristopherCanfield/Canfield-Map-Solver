@@ -114,16 +114,19 @@ public class Node implements Drawable
 		int pixelX = getColumn() * pixelsPerNode + startX;
 		int pixelY = getRow() * pixelsPerNode + startY;
 		
-		// If the square is not open, fill it with black.
-		if (!open)
+		// If the square is not open, fill it with black. If it is the entrance,
+		// fill it with light green. If it is the exit, fill it with dark green.
+		if (!open || isEntrance() || isExit())
 		{
-			g.setColor(Color.BLACK);
+			Color fillColor = isEntrance() ? new Color(196, 255, 170) : 
+					isExit() ? new Color(38, 127, 0) : Color.BLACK;
+			g.setColor(fillColor);
 			g.fillRect(pixelX, pixelY, pixelsPerNode, pixelsPerNode);
 		}
 		
-		// Set the outline color to gray if the node is an entrance or exit, 
-		// white if the square is not open, or black if it is open.
-		Color color = (entrance || exit) ? Color.MAGENTA : !open ? Color.WHITE : Color.BLACK;
+		// Set the outline color to white if the square is  open, 
+		// or black if it is open.
+		Color color = !open ? Color.WHITE : Color.BLACK;
 		g.setColor(color);
 		
 		// Draw an outline around the node's square.

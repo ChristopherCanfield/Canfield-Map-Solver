@@ -28,8 +28,8 @@ public class PathNode extends Node
 	public void draw(Graphics g, int startX, int startY, int pixelsPerNode)
 	{
 		// Calculate the x and y pixels.
-		int pixelX = getColumn() * pixelsPerNode;
-		int pixelY = getRow() * pixelsPerNode;
+		int pixelX = getColumn() * pixelsPerNode + startX;
+		int pixelY = getRow() * pixelsPerNode + startY;
 				
 		g.setColor(Color.GREEN);
 		// Draw the node as a green rectangle.
