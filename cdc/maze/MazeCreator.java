@@ -13,9 +13,9 @@ public class MazeCreator
 	private enum SearchFor { ENTRANCE, EXIT };
 	
 	/** The number of rows in the maze. **/
-	public static int MAZE_ROWS = 10;
+	public static final int MAZE_ROWS = 10;
 	/** The number of columns in the maze. **/
-	public static int MAZE_COLUMNS = 10;
+	public static final int MAZE_COLUMNS = 10;
 	
 	/**
 	 * Load the maze file. The file should be named "mazes.txt", and be located

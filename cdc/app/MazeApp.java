@@ -2,9 +2,6 @@ package cdc.app;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -14,8 +11,6 @@ import cdc.maze.Node;
 import cdc.search.ManhattanHeuristic;
 import cdc.search.Search;
 import cdc.search.SearchResult;
-import cdc.test.TestMazeApp_allClosed;
-import cdc.test.TestMazeApp_allOpen;
 
 /**
  * The maze solver application.
@@ -37,7 +32,7 @@ public class MazeApp extends JFrame
 	/** The x pixel location of the first node. **/
 	private static final int FIRST_NODE_X = 50;
 	/** The y pixel location of the first node. **/
-	private static final int FIRST_NODE_Y = 100;
+	private static final int FIRST_NODE_Y = 110;
 	/** The number of pixels per node. **/
 	private static final int PIXELS_PER_NODE = 40;
 	
@@ -190,7 +185,7 @@ public class MazeApp extends JFrame
 		
 		if (maze != null)
 		{
-			g.drawString("<< Click to restart >>", 200, 95);
+			g.drawString("<< Click to restart >>", 200, 100);
 			drawSearchResult(g);
 			drawStartAndExit(g);
 			drawMaze(g);
