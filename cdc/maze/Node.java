@@ -105,11 +105,22 @@ public class Node implements Drawable
 	public void draw(Graphics g, int startX, int startY, int pixelsPerNode)
 	{
 		// Calculate the x and y pixels.
-		int pixelX = getColumn() * pixelsPerNode;
-		int pixelY = getRow() * pixelsPerNode;
-
-		g.setColor(Color.BLACK);
-		// Draw a black outline around the node's square.
+		int pixelX = getColumn() * pixelsPerNode + startX;
+		int pixelY = getRow() * pixelsPerNode + startY;
+		
+		// If the square is not open, fill it with black.
+		if (!open)
+		{
+			g.setColor(Color.BLACK);
+			g.fillRect(pixelX, pixelY, pixelsPerNode, pixelsPerNode);
+		}
+		
+		// Set the outline color to gray if the node is an entrance or exit, 
+		// white if the square is not open, or black if it is open.
+		Color color = (entrance || exit) ? Color.MAGENTA : !open ? Color.WHITE : Color.BLACK;
+		g.setColor(color);
+		
+		// Draw an outline around the node's square.
 		g.drawRect(pixelX, pixelY, pixelsPerNode, pixelsPerNode);
 	}
 }

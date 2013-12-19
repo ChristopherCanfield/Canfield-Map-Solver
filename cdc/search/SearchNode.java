@@ -16,9 +16,9 @@ public class SearchNode implements Drawable
 	// The underlying node that this search node wraps.
 	private Node underlyingNode;
 	// The parent to this node in the path.
-	private Node parent;
+	private SearchNode parent;
 	
-	public SearchNode(Node underlyingNode, Node parent)
+	public SearchNode(Node underlyingNode, SearchNode parent)
 	{
 		this.underlyingNode = underlyingNode;
 		this.parent = parent;
@@ -35,9 +35,9 @@ public class SearchNode implements Drawable
 	
 	/**
 	 * Returns the parent of this node in the path.
-	 * @return This node's parent.
+	 * @return This search node's parent.
 	 */
-	public Node getParent()
+	public SearchNode getParent()
 	{
 		return parent;
 	}

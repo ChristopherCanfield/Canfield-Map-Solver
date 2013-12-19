@@ -50,4 +50,47 @@ public class MazeCreator
 		}
 		return null;
 	}
+	
+
+	// Methods for testing //
+	
+	/**
+	 * Generates a test maze where all squares are open.
+	 * @param entrance The location of the entrance.
+	 * @param exit The location of the exit.
+	 * @return A test maze where all squares are open.
+	 */
+	public static Node[][] generateAllOpen(MazeLocation entrance, MazeLocation exit)
+	{
+		Node[][] maze = new Node[10][10];
+		for (int row = 0; row < maze[0].length; ++row)
+		{
+			for (int col = 0; col < maze.length; ++col)
+			{
+				maze[row][col] = new Node(new MazeLocation(row, col), true, false, false);
+			}
+		}
+		maze[entrance.getRow()][entrance.getColumn()] = new Node(entrance, true, true, false);
+		maze[exit.getRow()][exit.getRow()] = new Node(exit, true, false, true);
+			
+		return maze;
+	}
+	
+	/**
+	 * Generates a test maze where all squares are closed.
+	 * @return A test maze where all squares are closed.
+	 */
+	public static Node[][] generateAllClosed()
+	{
+		Node[][] maze = new Node[10][10];
+		for (int row = 0; row < maze[0].length; ++row)
+		{
+			for (int col = 0; col < maze.length; ++col)
+			{
+				maze[row][col] = new Node(new MazeLocation(row, col), false, false, false);
+			}
+		}
+			
+		return maze;
+	}
 }

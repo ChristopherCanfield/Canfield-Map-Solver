@@ -18,7 +18,9 @@ public class MazeApp extends JFrame
 {
 	public static void main(String[] args)
 	{
-		MazeApp mazeApp = new MazeApp();
+		// Change this to new TestMazeApp_allOpen() or TestMazeApp_allClosed()
+		// to run the two test apps.
+		MazeApp mazeApp = new TestMazeApp_allClosed();
 		mazeApp.run();
 	}
 	
@@ -26,11 +28,11 @@ public class MazeApp extends JFrame
 	private static final long serialVersionUID = -1670419072941353469L;
 	
 	/** The x pixel location of the first node. **/
-	private static final int FIRST_NODE_X = 20;
+	private static final int FIRST_NODE_X = 50;
 	/** The y pixel location of the first node. **/
 	private static final int FIRST_NODE_Y = 100;
 	/** The number of pixels per node. **/
-	private static final int PIXELS_PER_NODE = 20;
+	private static final int PIXELS_PER_NODE = 40;
 	
 	/** The maze, as an array of nodes. **/
 	private Node[][] maze;
@@ -38,7 +40,7 @@ public class MazeApp extends JFrame
 	public MazeApp()
 	{
 		super("Canfield A* Maze Solver");
-		setSize(400, 500);
+		setSize(500, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(Color.WHITE);
 		setLocationRelativeTo(null);
@@ -57,7 +59,7 @@ public class MazeApp extends JFrame
 		int seed = getSeedFromUser();
 		
 		// Generate the maze using the provided seed.
-		Node[][] maze = MazeCreator.generateMaze(seed);
+		maze = MazeCreator.generateMaze(seed);
 		
 		// Get the maze's start and end nodes.
 		Node start = MazeCreator.getEntrance(maze);
@@ -71,6 +73,11 @@ public class MazeApp extends JFrame
 
 		// Repaint the Jframe to ensure that the visualization of the search appears.
 		repaint();
+	}
+	
+	protected void setMaze(Node[][] maze)
+	{
+		this.maze = maze;
 	}
 	
 	private int getSeedFromUser()
@@ -102,5 +109,9 @@ public class MazeApp extends JFrame
 				}
 			}
 		}
+		
+		g.setColor(Color.BLACK);
+		g.drawString("BU MET CS664 | Christopher Canfield", 
+				150, FIRST_NODE_Y + 30 + PIXELS_PER_NODE * 10);
 	}
 }
