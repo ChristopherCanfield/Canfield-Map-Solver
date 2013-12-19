@@ -38,4 +38,18 @@ public class SearchResult
 	{
 		return searchedNodes;
 	}
+	
+	/**
+	 * Prints the path. Does not print the list of searched nodes.
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for (Node node : path)
+		{
+			sb.append(node.toString()).append(" ");
+		}
+		return sb.toString();
+	}
 }

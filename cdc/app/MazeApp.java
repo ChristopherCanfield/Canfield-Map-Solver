@@ -55,12 +55,22 @@ public class MazeApp extends JFrame
 	{
 		// Ask the user for a seed.
 		int seed = getSeedFromUser();
+		
+		// Generate the maze using the provided seed.
 		Node[][] maze = MazeCreator.generateMaze(seed);
+		
+		// Get the maze's start and end nodes.
 		Node start = MazeCreator.getEntrance(maze);
 		Node end = MazeCreator.getExit(maze);
 		
-		SearchResult result = Search.aStar(start, end, new ManhattanHeuristic());
+		// Perform an A* search, and get the path from the start to the goal.
+		SearchResult searchResult = Search.aStar(start, end, new ManhattanHeuristic());
 		
+		// Print the path to the console.
+		System.out.println("Path: " + searchResult.toString());
+
+		// Repaint the Jframe to ensure that the visualization of the search appears.
+		repaint();
 	}
 	
 	private int getSeedFromUser()
