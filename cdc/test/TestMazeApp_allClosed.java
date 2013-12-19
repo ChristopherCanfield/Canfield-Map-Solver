@@ -1,7 +1,7 @@
-package cdc.app;
+package cdc.test;
 
+import cdc.app.MazeApp;
 import cdc.maze.MazeCreator;
-import cdc.maze.MazeLocation;
 import cdc.maze.Node;
 
 /**

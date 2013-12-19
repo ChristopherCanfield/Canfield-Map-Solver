@@ -34,7 +34,7 @@ public class SearchResult
 	 * The nodes that were explored during the search.
 	 * @return
 	 */
-	public Set<SearchNode> getSearchedNode()
+	public Set<SearchNode> getSearchedNodes()
 	{
 		return searchedNodes;
 	}

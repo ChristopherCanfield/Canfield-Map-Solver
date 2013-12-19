@@ -13,6 +13,7 @@ import cdc.maze.Node;
 import cdc.search.ManhattanHeuristic;
 import cdc.search.Search;
 import cdc.search.SearchResult;
+import cdc.test.TestMazeApp_allClosed;
 
 public class MazeApp extends JFrame
 {
@@ -35,7 +36,14 @@ public class MazeApp extends JFrame
 	private static final int PIXELS_PER_NODE = 40;
 	
 	/** The maze, as an array of nodes. **/
-	private Node[][] maze;
+	private Node[][] maze = null;
+	
+	/** 
+	 * The result returned by the A* search, which includes the path
+	 * as well as the set of searched nodes.
+	 */
+	private SearchResult searchResult = null;
+	
 	
 	public MazeApp()
 	{
@@ -55,8 +63,18 @@ public class MazeApp extends JFrame
 	 */
 	public void run()
 	{
-		// Ask the user for a seed.
-		int seed = getSeedFromUser();
+		int seed;
+		try
+		{
+			// Ask the user for a seed.
+			seed = getSeedFromUser();
+		}
+		catch (NumberFormatException e)
+		{
+			// If the user cancelled the seed dialog box, or entered an invalid
+			// value, cancel the run attempt.
+			return;
+		}
 		
 		// Generate the maze using the provided seed.
 		maze = MazeCreator.generateMaze(seed);
@@ -66,12 +84,12 @@ public class MazeApp extends JFrame
 		Node end = MazeCreator.getExit(maze);
 		
 		// Perform an A* search, and get the path from the start to the goal.
-		SearchResult searchResult = Search.aStar(start, end, new ManhattanHeuristic());
+		searchResult = Search.aStar(start, end, new ManhattanHeuristic());
 		
 		// Print the path to the console.
 		System.out.println("Path: " + searchResult.toString());
 
-		// Repaint the Jframe to ensure that the visualization of the search appears.
+		// Repaint the JFrame to ensure that the visualization of the search appears.
 		repaint();
 	}
 	
@@ -80,13 +98,12 @@ public class MazeApp extends JFrame
 		this.maze = maze;
 	}
 	
-	private int getSeedFromUser()
+	private int getSeedFromUser() throws NumberFormatException
 	{
-		final String text = "Enter maze seed:";
+		final String text = "Enter maze seed (integer):";
 		final String title = "Maze Seed";
 		
 		String returnValue = JOptionPane.showInputDialog(this, text, title, JOptionPane.PLAIN_MESSAGE);
-		// TODO: check for null.
 		return Integer.parseInt(returnValue);
 	}
 	
@@ -98,12 +115,30 @@ public class MazeApp extends JFrame
 		
 		if (maze != null)
 		{
-			// TODO: draw the searched nodes, followed by the path.
+			// Ensure that a searchResult has been returned by the A* algorithm.
+			if (searchResult != null)
+			{
+				// Draw the set of searched nodes.
+				for (Node node : searchResult.getSearchedNodes())
+				{
+					node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
+				}
+				
+				// Ensure that a valid path was found by the A* algorithm.
+				if (searchResult.getPath() != null)
+				{
+					// Draw the path.
+					for (Node node : searchResult.getPath())
+					{
+						node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
+					}
+				}
+			}
 			
 			// Draw each node in the maze.
-			for (Node[] mazeColumn : maze)
+			for (Node[] m : maze)
 			{
-				for (Node node : mazeColumn)
+				for (Node node : m)
 				{
 					node.draw(g, FIRST_NODE_X, FIRST_NODE_Y, PIXELS_PER_NODE);
 				}

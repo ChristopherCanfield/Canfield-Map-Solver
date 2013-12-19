@@ -129,4 +129,30 @@ public class Node implements Drawable
 		// Draw an outline around the node's square.
 		g.drawRect(pixelX, pixelY, pixelsPerNode, pixelsPerNode);
 	}
+	
+	
+	// equals & hashCode are required by the A* algorithm.
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Node))
+		{
+			return false;
+		}
+		
+		Node otherNode = (Node)other;
+		return (this.getRow() == otherNode.getRow() &&
+				this.getColumn() == otherNode.getColumn());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		// Adapted from J. Bloch, "Effective Java", 2nd edition, 2008.
+		int result = 17;
+		result = 31 * result + getRow();
+		result = 31 * result + getColumn();
+		return  result;
+	}
 }
