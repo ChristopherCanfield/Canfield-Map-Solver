@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import cdc.app.Drawable;
+import cdc.maze.MazeLocation;
 import cdc.maze.Node;
 
 /**
@@ -11,26 +12,17 @@ import cdc.maze.Node;
  * for a path.
  * @author Christopher D. Canfield
  */
-public class SearchNode implements Drawable
+public class SearchNode extends Node
 {
-	// The underlying node that this search node wraps.
-	private Node underlyingNode;
 	// The parent to this node in the path.
 	private SearchNode parent;
 	
 	public SearchNode(Node underlyingNode, SearchNode parent)
 	{
-		this.underlyingNode = underlyingNode;
+		super(new MazeLocation(underlyingNode.getRow(), underlyingNode.getColumn()), 
+				underlyingNode.isOpen(), underlyingNode.isEntrance(), underlyingNode.isExit(),
+				underlyingNode.getEdges());
 		this.parent = parent;
-	}
-	
-	/**
-	 * Returns the underlying node.
-	 * @return The underlying node.
-	 */
-	public Node getNode()
-	{
-		return underlyingNode;
 	}
 	
 	/**
@@ -46,8 +38,8 @@ public class SearchNode implements Drawable
 	public void draw(Graphics g, int startX, int startY, int pixelsPerNode)
 	{
 		// Calculate the x and y pixels.
-		int pixelX = getNode().getColumn() * pixelsPerNode;
-		int pixelY = getNode().getRow() * pixelsPerNode;
+		int pixelX = getColumn() * pixelsPerNode;
+		int pixelY = getRow() * pixelsPerNode;
 		
 		g.setColor(Color.BLUE);
 		// Draw the node as a blue rectangle.

@@ -29,11 +29,17 @@ public class Node implements Drawable
 	public Node(MazeLocation location, boolean isOpen, 
 			boolean isEntrance, boolean isExit)
 	{
+		this(location, isOpen, isEntrance, isExit, null);
+	}
+	
+	public Node(MazeLocation location, boolean isOpen, 
+			boolean isEntrance, boolean isExit, List<Node> edges)
+	{
 		this.location = location;
 		this.open = isOpen;
 		this.entrance = isEntrance;
 		this.exit = isExit;
-		this.edges = new ArrayList<Node>();
+		this.edges = (edges == null) ? new ArrayList<Node>() : edges;
 	}
 	
 	/**

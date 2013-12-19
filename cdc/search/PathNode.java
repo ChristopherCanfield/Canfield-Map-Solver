@@ -3,7 +3,6 @@ package cdc.search;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import cdc.app.Drawable;
 import cdc.maze.MazeLocation;
 import cdc.maze.Node;
 
@@ -21,7 +20,8 @@ public class PathNode extends Node
 	public PathNode(Node underlyingNode)
 	{
 		super(new MazeLocation(underlyingNode.getRow(), underlyingNode.getColumn()),
-				underlyingNode.isOpen(), underlyingNode.isEntrance(), underlyingNode.isExit());
+				underlyingNode.isOpen(), underlyingNode.isEntrance(), underlyingNode.isExit(),
+				underlyingNode.getEdges());
 	}
 
 	@Override
