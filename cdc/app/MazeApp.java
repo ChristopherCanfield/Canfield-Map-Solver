@@ -14,14 +14,19 @@ import cdc.search.ManhattanHeuristic;
 import cdc.search.Search;
 import cdc.search.SearchResult;
 import cdc.test.TestMazeApp_allClosed;
+import cdc.test.TestMazeApp_allOpen;
 
+/**
+ * The maze solver application.
+ * @author Christopher D. Canfield
+ */
 public class MazeApp extends JFrame
 {
 	public static void main(String[] args)
 	{
 		// Change this to new TestMazeApp_allOpen() or TestMazeApp_allClosed()
 		// to run the two test apps.
-		MazeApp mazeApp = new TestMazeApp_allClosed();
+		MazeApp mazeApp = new MazeApp();
 		mazeApp.run();
 	}
 	
@@ -93,11 +98,40 @@ public class MazeApp extends JFrame
 		repaint();
 	}
 	
+	/**
+	 * Sets the maze. Used by test applications.
+	 * @param maze Reference to the instantiated maze.
+	 */
 	protected void setMaze(Node[][] maze)
 	{
 		this.maze = maze;
 	}
 	
+	/**
+	 * Sets the search result. Used by test applications.
+	 * @param result Reference to an A* search result.
+	 */
+	protected void setSearchResult(SearchResult result)
+	{
+		searchResult = result;
+	}
+	
+	/**
+	 * Gets the search result. Used by test applications.
+	 * @return Reference to the A* search result, or null
+	 * if no result exists.
+	 */
+	protected SearchResult getSearchResult()
+	{
+		return searchResult;
+	}
+	
+	/**
+	 * Prompts the user for a seed for the maze generator.
+	 * @return The instantiated maze.
+	 * @throws NumberFormatException If an invalid value is entered by the user,
+	 * or if the user cancelled the input box.
+	 */
 	private int getSeedFromUser() throws NumberFormatException
 	{
 		final String text = "Enter maze seed (integer):";

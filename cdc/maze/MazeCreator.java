@@ -25,6 +25,38 @@ public class MazeCreator
 		return null;
 	}
 	
+	/**
+	 * Connect nodes to each other.
+	 * @param maze
+	 */
+	private static void processEdges(Node[][] maze)
+	{
+		// Iterate through all nodes in the maze, and add connections
+		// where applicable.
+		for (int row = 0; row < maze[0].length; ++row)
+		{
+			for (int col = 0; col < maze.length; ++col)
+			{
+				if (row > 0)
+				{
+					maze[row][col].addEdge(maze[row-1][col]);
+				}
+				if (row < maze.length - 1)
+				{
+					maze[row][col].addEdge(maze[row+1][col]);
+				}
+				if (col > 0)
+				{
+					maze[row][col].addEdge(maze[row][col-1]);
+				}
+				if (col < maze[0].length - 1)
+				{
+					maze[row][col].addEdge(maze[row][col+1]);
+				}
+			}
+		}
+	}
+	
 	public static Node getEntrance(Node[][] maze)
 	{
 		return findNode(maze, SearchFor.ENTRANCE);
@@ -72,7 +104,8 @@ public class MazeCreator
 		}
 		maze[entrance.getRow()][entrance.getColumn()] = new Node(entrance, true, true, false);
 		maze[exit.getRow()][exit.getRow()] = new Node(exit, true, false, true);
-			
+		processEdges(maze);
+		
 		return maze;
 	}
 	
