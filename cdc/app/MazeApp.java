@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import cdc.maze.MazeCreator;
+import cdc.maze.MazeLocation;
 import cdc.maze.Node;
 import cdc.search.ManhattanHeuristic;
 import cdc.search.Search;
@@ -66,8 +67,7 @@ public class MazeApp extends JFrame
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
-		// TODO: add a mouse listener if it is needed.
-		//addMouseListener();
+		addMouseListener(new ClickController(this));
 	}
 	
 	/**
@@ -81,26 +81,31 @@ public class MazeApp extends JFrame
 			// Ask the user for a maze number. The maze number corresponds
 			// to the maze definitions in the file.
 			mazeNumber = getMazeNumberFromUser();
+
+			// Load the maze specified by the user.
+			maze = MazeCreator.loadMaze(mazeNumber);
+			
+			// Get the maze's start and end nodes.
+			start = MazeCreator.getEntrance(maze);
+			exit = MazeCreator.getExit(maze);
+			
+			// Perform an A* search, and get the path from the start to the goal.
+			searchResult = Search.aStar(start, exit, new ManhattanHeuristic());
+			
+			// Print the path to the console.
+			System.out.println("Path: " + searchResult.toString());
 		}
-		catch (NumberFormatException e)
+		catch (Exception e)
 		{
-			// If the user cancelled the seed dialog box, or entered an invalid
-			// value, cancel the run attempt.
-			return;
+			// If the user cancelled the maze number dialog box or entered an invalid
+			// value, or if an error occurred, cancel the run attempt and show a blank grid.
+			maze = MazeCreator.generateAllOpen(new MazeLocation(0, 0), new MazeLocation(9, 9));
+			start = exit = null;
+			searchResult = null;
+			System.out.println(e);
+			e.printStackTrace();
+			
 		}
-		
-		// Load the maze specified by the user.
-		maze = MazeCreator.loadMaze(mazeNumber);
-		
-		// Get the maze's start and end nodes.
-		start = MazeCreator.getEntrance(maze);
-		exit = MazeCreator.getExit(maze);
-		
-		// Perform an A* search, and get the path from the start to the goal.
-		searchResult = Search.aStar(start, exit, new ManhattanHeuristic());
-		
-		// Print the path to the console.
-		System.out.println("Path: " + searchResult.toString());
 
 		// Repaint the JFrame to ensure that the visualization of the search appears.
 		repaint();
@@ -176,13 +181,16 @@ public class MazeApp extends JFrame
 		
 		// Write text at the top of the JFrame.
 		g.setColor(Color.BLACK);
-		g.drawString("Light Green: Entrance", 115, 55);
-		g.drawString("Dark Green: Exit", 115, 75);
-		g.drawString("Green: Path", 300, 55);
-		g.drawString("Blue: Searched", 300, 75);
+		g.drawString("Light Green: Entrance", 85, 55);
+		g.drawString("Dark Green: Exit", 85, 75);
+		g.drawString("Green: Path", 235, 55);
+		g.drawString("Blue: Searched", 235, 75);
+		g.drawString("White: Open", 350, 55);
+		g.drawString("Black: Wall", 350, 75);
 		
 		if (maze != null)
 		{
+			g.drawString("<< Click to restart >>", 200, 95);
 			drawSearchResult(g);
 			drawStartAndExit(g);
 			drawMaze(g);

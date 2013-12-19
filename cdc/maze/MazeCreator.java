@@ -96,7 +96,7 @@ public class MazeCreator
 	 */
 	private static void skipLines(BufferedReader reader, int mazeNumber) throws IOException
 	{
-		for (int i = 0; i < (mazeNumber - 1) * 10 + ; ++i)
+		for (int i = 0; i < (mazeNumber - 1) * MAZE_ROWS + (1 * mazeNumber); ++i)
 		{
 			reader.readLine();
 		}
@@ -137,7 +137,8 @@ public class MazeCreator
 	/**
 	 * Returns the entrance to the maze.
 	 * @param maze Reference to the maze.
-	 * @return The entrance to the maze, or null if it cannot be found.
+	 * @return The entrance to the maze.
+	 * @throws RuntimeException If the entrance is not found.
 	 */
 	public static Node getEntrance(Node[][] maze)
 	{
@@ -147,7 +148,8 @@ public class MazeCreator
 	/**
 	 * Returns the exit from the maze.
 	 * @param maze Reference to the maze.
-	 * @return The exit from the maze, or null if it cannot be found.
+	 * @return The exit from the maze.
+	 * @throws RuntimeException If the exit is not found.
 	 */
 	public static Node getExit(Node[][] maze)
 	{
@@ -158,7 +160,8 @@ public class MazeCreator
 	 * Finds the specified node in the maze.
 	 * @param maze Reference to the maze.
 	 * @param searchItem The item to search for.
-	 * @return The found node, or null if it cannot be found.
+	 * @return The found node.
+	 * @throws RuntimeException If the search item is not found.
 	 */
 	private static Node findNode(Node[][] maze, SearchFor searchItem)
 	{
@@ -173,7 +176,7 @@ public class MazeCreator
 				}
 			}
 		}
-		return null;
+		throw new RuntimeException("Maze is missing an exit or entrance.");
 	}
 	
 
