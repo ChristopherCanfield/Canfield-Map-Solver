@@ -1,6 +1,8 @@
 package cdc.maze;
 
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Contains the method for creating a maze.
@@ -10,24 +12,99 @@ public class MazeCreator
 {
 	private enum SearchFor { ENTRANCE, EXIT };
 	
+	/** The number of rows in the maze. **/
+	public static int MAZE_ROWS = 10;
+	/** The number of columns in the maze. **/
+	public static int MAZE_COLUMNS = 10;
+	
 	/**
-	 * Generate the maze.
-	 * @param seed The seed for the random number generator, which is used to 
-	 * generate the maze.
-	 * @return The array of nodes representing a maze.
+	 * Load the maze file. The file should be named "mazes.txt", and be located
+	 * in this application's current directory. Each maze should be 10x10 characters,
+	 * and contain the following characters per row: W (wall), O (open), E (entrance),
+	 * X (exit). Mazes should have exactly one entrance and one exit. Each maze 
+	 * definition in the file should be separated by a line. The first line in the
+	 * file is ignored.
+	 * @param mazeNumber The maze number in the maze file, starting with 1.
+	 * @return The instantiated maze.
 	 */
-	public static Node[][] generateMaze(int seed)
+	public static Node[][] loadMaze(int mazeNumber)
 	{
-		Random rand = new Random(seed);
-		Node[][] maze = new Node[10][10];
-		
-		// TODO: implement this...
-		return null;
+		try (FileReader reader = new FileReader("mazes.txt"))
+		{
+			Node[][] maze = readMaze(reader, mazeNumber);
+			processEdges(maze);
+			return maze;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException(e.toString());
+		}
 	}
 	
 	/**
-	 * Connect nodes to each other.
-	 * @param maze
+	 * Reads the maze from the FileReader object, processes the characters,
+	 * and loads Nodes based on the characters into the maze array.
+	 * @param fileReader A FileReader object that points to the mazes.txt file.
+	 * @param mazeNumber The number of the maze definition in the file, starting
+	 * with 1.
+	 * @return The instantiated maze array.
+	 * @throws IOException If there is a problem processing the maze array.
+	 */
+	private static Node[][] readMaze(FileReader fileReader, int mazeNumber) throws IOException
+	{
+		Node[][] maze = new Node[MAZE_ROWS][MAZE_COLUMNS];
+		BufferedReader reader = new BufferedReader(fileReader);
+		skipLines(reader, mazeNumber);
+		
+		for (int row = 0; row < maze[0].length; ++row)
+		{
+			final String line = reader.readLine();
+			for (int column = 0; column < maze.length; ++column)
+			{
+				boolean open = true;
+				boolean entrance = false;
+				boolean exit = false;
+				
+				final char character = line.charAt(column);
+				if (character == 'W')
+				{
+					open = false;
+				}
+				else if (character == 'E')
+				{
+					entrance = true;
+				}
+				else if (character == 'X')
+				{
+					exit = true;
+				}
+				
+				MazeLocation location = new MazeLocation(row, column);
+				maze[row][column] = new Node(location, open, entrance, exit);
+			}
+		}
+		return maze;
+	}
+	
+	/**
+	 * Skips the specified number of lines in a file.
+	 * @param reader A BufferedReader pointing to the mazes.txt file.
+	 * @param mazeNumber The number of the maze definition in the file, starting
+	 * with 1.
+	 * @throws IOException If there is a problem processing the maze array.
+	 */
+	private static void skipLines(BufferedReader reader, int mazeNumber) throws IOException
+	{
+		for (int i = 0; i < (mazeNumber - 1) * 10 + ; ++i)
+		{
+			reader.readLine();
+		}
+	}
+	
+	/**
+	 * Connects nodes to each other.
+	 * @param maze Reference to the maze array.
 	 */
 	private static void processEdges(Node[][] maze)
 	{
@@ -57,16 +134,32 @@ public class MazeCreator
 		}
 	}
 	
+	/**
+	 * Returns the entrance to the maze.
+	 * @param maze Reference to the maze.
+	 * @return The entrance to the maze, or null if it cannot be found.
+	 */
 	public static Node getEntrance(Node[][] maze)
 	{
 		return findNode(maze, SearchFor.ENTRANCE);
 	}
 	
+	/**
+	 * Returns the exit from the maze.
+	 * @param maze Reference to the maze.
+	 * @return The exit from the maze, or null if it cannot be found.
+	 */
 	public static Node getExit(Node[][] maze)
 	{
 		return findNode(maze, SearchFor.EXIT);
 	}
 	
+	/**
+	 * Finds the specified node in the maze.
+	 * @param maze Reference to the maze.
+	 * @param searchItem The item to search for.
+	 * @return The found node, or null if it cannot be found.
+	 */
 	private static Node findNode(Node[][] maze, SearchFor searchItem)
 	{
 		for (Node[] m : maze)
@@ -94,7 +187,7 @@ public class MazeCreator
 	 */
 	public static Node[][] generateAllOpen(MazeLocation entrance, MazeLocation exit)
 	{
-		Node[][] maze = new Node[10][10];
+		Node[][] maze = new Node[MAZE_ROWS][MAZE_COLUMNS];
 		for (int row = 0; row < maze[0].length; ++row)
 		{
 			for (int col = 0; col < maze.length; ++col)
@@ -115,7 +208,7 @@ public class MazeCreator
 	 */
 	public static Node[][] generateAllClosed()
 	{
-		Node[][] maze = new Node[10][10];
+		Node[][] maze = new Node[MAZE_ROWS][MAZE_COLUMNS];
 		for (int row = 0; row < maze[0].length; ++row)
 		{
 			for (int col = 0; col < maze.length; ++col)

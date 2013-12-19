@@ -26,7 +26,7 @@ public class MazeApp extends JFrame
 	{
 		// Change this to new TestMazeApp_allOpen() or TestMazeApp_allClosed()
 		// to run the two test apps.
-		MazeApp mazeApp = new TestMazeApp_allOpen();
+		MazeApp mazeApp = new MazeApp();
 		mazeApp.run();
 	}
 	
@@ -54,7 +54,9 @@ public class MazeApp extends JFrame
 	 */
 	private SearchResult searchResult = null;
 	
-	
+	/**
+	 * Instantiates the maze solver.
+	 */
 	public MazeApp()
 	{
 		super("Canfield A* Maze Solver");
@@ -73,11 +75,12 @@ public class MazeApp extends JFrame
 	 */
 	public void run()
 	{
-		int seed;
+		int mazeNumber;
 		try
 		{
-			// Ask the user for a seed.
-			seed = getSeedFromUser();
+			// Ask the user for a maze number. The maze number corresponds
+			// to the maze definitions in the file.
+			mazeNumber = getMazeNumberFromUser();
 		}
 		catch (NumberFormatException e)
 		{
@@ -86,8 +89,8 @@ public class MazeApp extends JFrame
 			return;
 		}
 		
-		// Generate the maze using the provided seed.
-		maze = MazeCreator.generateMaze(seed);
+		// Load the maze specified by the user.
+		maze = MazeCreator.loadMaze(mazeNumber);
 		
 		// Get the maze's start and end nodes.
 		start = MazeCreator.getEntrance(maze);
@@ -150,15 +153,16 @@ public class MazeApp extends JFrame
 	}
 	
 	/**
-	 * Prompts the user for a seed for the maze generator.
-	 * @return The instantiated maze.
+	 * Prompts the user for a number which corresponds to the maze definition
+	 * in the maze file.
+	 * @return The maze number.
 	 * @throws NumberFormatException If an invalid value is entered by the user,
 	 * or if the user cancelled the input box.
 	 */
-	private int getSeedFromUser() throws NumberFormatException
+	private int getMazeNumberFromUser() throws NumberFormatException
 	{
-		final String text = "Enter maze seed (integer):";
-		final String title = "Maze Seed";
+		final String text = "Enter maze number from mazes.txt file:";
+		final String title = "Maze Number";
 		
 		String returnValue = JOptionPane.showInputDialog(this, text, title, JOptionPane.PLAIN_MESSAGE);
 		return Integer.parseInt(returnValue);
@@ -169,6 +173,13 @@ public class MazeApp extends JFrame
 	public void paint(Graphics g)
 	{
 		super.paint(g);
+		
+		// Write text at the top of the JFrame.
+		g.setColor(Color.BLACK);
+		g.drawString("Light Green: Entrance", 115, 55);
+		g.drawString("Dark Green: Exit", 115, 75);
+		g.drawString("Green: Path", 300, 55);
+		g.drawString("Blue: Searched", 300, 75);
 		
 		if (maze != null)
 		{

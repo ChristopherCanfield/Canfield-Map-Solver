@@ -26,15 +26,38 @@ public class Node implements Drawable
 	// The node's list of edges (connections to other nodes).
 	private List<Node> edges;
 	
+	/**
+	 * Instantiates a node.
+	 * @param location The node's (row, column) location in the maze.
+	 * @param isOpen Whether the node is open (passable) or not.
+	 * @param isEntrance Whether the node is the maze's entrance.
+	 * @param isExit
+	 */
 	public Node(MazeLocation location, boolean isOpen, 
 			boolean isEntrance, boolean isExit)
 	{
 		this(location, isOpen, isEntrance, isExit, null);
 	}
 	
+	/**
+	 * Instantiates a node with entrance and exit set to false.
+	 * @param location The node's (row, column) location in the maze.
+	 * @param isOpen Whether the node is open (passable) or not.
+	 */
+	public Node(MazeLocation location, boolean isOpen)
+	{
+		this(location, isOpen, false, false);
+	}
+	
 	public Node(MazeLocation location, boolean isOpen, 
 			boolean isEntrance, boolean isExit, List<Node> edges)
 	{
+		if (isEntrance && isExit)
+		{
+			throw new IllegalArgumentException(
+					"A Node cannot be both an entrance and and exit");
+		}
+		
 		this.location = location;
 		this.open = isOpen;
 		this.entrance = isEntrance;
@@ -157,5 +180,13 @@ public class Node implements Drawable
 		result = 31 * result + getRow();
 		result = 31 * result + getColumn();
 		return  result;
+	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("(").append(getRow()).append(",").append(getColumn()).append(")");
+		return sb.toString();
 	}
 }
