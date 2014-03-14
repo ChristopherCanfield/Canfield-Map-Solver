@@ -97,8 +97,6 @@ public class MazeApp extends JFrame
 			maze = MazeCreator.generateAllOpen(new MazeLocation(0, 0), new MazeLocation(9, 9));
 			start = exit = null;
 			searchResult = null;
-			System.out.println(e);
-			e.printStackTrace();
 			
 		}
 
